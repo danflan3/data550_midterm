@@ -31,7 +31,8 @@ table1_final <- table1 %>%
                 BLK ~ "Blocks",
                 TOV ~ "Turnovers",
                 PF ~ "Fouls",
-                PTS ~ "Points"),
+                PTS ~ "Points",
+                FT% ~ "Free Throw Percentage"),
               statistic = list(all_continuous()~"{mean} ({sd})",
                                all_categorical() ~ "{n} ({p}%)"),
               digits = all_continuous() ~ 2
