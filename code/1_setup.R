@@ -10,10 +10,14 @@ data <- read.csv(here::here("data/nba_27feb2026.csv"))
 
 # -- Data cleaning
 data_clean <- data %>%
-  filter(MP >= 1000 & G >= 60) %>%
+  filter(MP >= 1000) %>%
   mutate(rank_topbottom10 = case_when(Rk %in% 1:10 ~ "Top 10",
                                       Rk %in% 196:205 ~ "Bottom 10",
                                       TRUE ~ NA))
+
+# Create binary variable for player All Star designation
+data_clean <- data_clean %>%
+  mutate(all_star = ifelse(grepl("AS", Awards), 1, 0))
 
 
 
