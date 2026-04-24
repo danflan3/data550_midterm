@@ -9,20 +9,18 @@ data_clean <- readRDS(here::here("data/nba_data_clean.rds"))
 
 
 # -- Run regression model
-model <- glm(all_star ~ PTS + FG. + X3P. + X2P. + FT. + ORB + AST + TOV + DRB + BLK + STL + PF, 
+model <- glm(all_star ~ FT + ORB + AST + TOV + DRB + BLK + STL + PF, 
              data = data_clean,
              family = binomial(link = "logit"))
 summary(model)
 
-
 # -- Make model results into a table
 model_table <- model %>%
-  tbl_regression() %>%
-  modify_caption("Linear regression predicting player all star status") %>%
+  tbl_regression(exponentiate = TRUE) %>%
+  modify_caption("Logistic regression predicting player all star status") %>%
   bold_labels()
 
 # -- Make model results into a forest plot
-
 tab <- broom::tidy(model, conf.int = TRUE, exponentiate = TRUE) %>%
   filter(term != "(Intercept)")   # remove intercept
 
@@ -37,7 +35,7 @@ tab <- broom::tidy(model, conf.int = TRUE, exponentiate = TRUE) %>%
     y = ""
   ) +
   theme_minimal(base_size = 14)
-
+ 
 # -- Save table 
 saveRDS(model_table, "output/table3.rds")
 
