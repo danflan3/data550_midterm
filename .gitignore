@@ -2,9 +2,11 @@
 .Rhistory
 .RData
 .Ruserdata
+*.Rproj
 
 ##Project specific folders
 /output
+/Canvas
 
 ##MacOSx 
 .DS_Store

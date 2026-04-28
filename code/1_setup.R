@@ -6,7 +6,7 @@ pacman::p_load(dplyr, tidyr, ggplot2, zoo, gt, gtsummary, broom, broom.helpers)
 
 
 # -- Load data
-data <- read.csv(here::here("data/raw_data/nba_27feb2026.csv"))
+data <- read.csv(here::here("data/raw_data/nba_data.csv"))
 
 
 # -- Data cleaning
@@ -56,14 +56,11 @@ data_allstar <- data_div %>%
 ## -- Step 3: Restrict data to players with >50% games played
 data_clean <- data_allstar %>%
   filter(GS. >= 0.50) %>%
-  arrange(Rk) %>%
-  mutate(rank_topbottom10 = case_when(row_number() <= 10 ~ "Top 10",
-                                      row_number() > (n() - 10) ~ "Bottom 10",
-                                      TRUE ~ NA))
+  filter(!is.na(conference)) %>%
+  mutate(X3P. = ifelse(X3P == 0 & X3PA == 0, 0, X3P.)) %>%
+  arrange(Rk) 
 
 # -- Save cleaned dataset as .rds and .csv
 saveRDS(data_clean, here::here("data/nba_data_clean.rds"))
-
-write.csv(data_clean, file = here::here("data/nba_data_clean.csv"), row.names=FALSE)
 
 
